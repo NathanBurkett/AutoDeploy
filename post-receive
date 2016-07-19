@@ -1,0 +1,30 @@
+#!/bin/sh
+
+## store the arguments given to the script
+read oldrev newrev refname
+
+## Where to store the log information about the updates
+LOGFILE=./post-receive.log
+
+# The deployed directory (the running site)
+DEPLOYDIR={change this}
+
+##  Record the fact that the push has been received
+echo "Received Push Request at $( date +'%Y-%m-%d %H:%M:%S' )" >> $LOGFILE
+echo " - Received Push Request at $( date +'%Y-%m-%d %H:%M:%S' )"
+echo "Old SHA: $oldrev New SHA: $newrev Branch Name: $refname" >> $LOGFILE
+
+## Update the deployed copy
+echo "Starting deploy" >> $LOGFILE
+
+echo " - Starting code update"
+GIT_WORK_TREE="$DEPLOYDIR" git checkout -f
+echo " - Finished code update"
+
+# echo " - Running post update scripts"
+# cd "$DEPLOYDIR"
+# {add commands here}
+# cd -
+# echo " - Finished post update scripts"
+
+echo "Finished Deploy" >> $LOGFILE
